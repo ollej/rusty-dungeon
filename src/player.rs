@@ -5,16 +5,17 @@ pub struct Player {
 }
 
 impl Player {
+    const SPRITE: u32 = 64;
+
     pub fn new(position: Point) -> Self {
         Self { position }
     }
 
-    pub fn render(&self, camera: &CameraView) {
-        draw_circle(
+    pub fn render(&self, camera: &CameraView, tileset: &TileSet) {
+        tileset.draw_tile(
+            Self::SPRITE,
             tile_pos_x(self.position.x - camera.left_x),
             tile_pos_y(self.position.y - camera.top_y),
-            tile_width() / 2.,
-            BLACK,
         );
     }
 

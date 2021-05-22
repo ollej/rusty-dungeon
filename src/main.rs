@@ -23,29 +23,42 @@ struct State {
     map: Map,
     player: Player,
     camera: CameraView,
+    tileset: TileSet,
 }
 
 impl State {
-    fn new() -> Self {
+    fn new(texture: Texture2D) -> Self {
         let map_builder = MapBuilder::new();
+        let tileset = TileSet {
+            texture: texture,
+            tile_width: 32,
+            tile_height: 32,
+            columns: 16,
+        };
         Self {
             map: map_builder.map,
             player: Player::new(map_builder.player_start),
             camera: CameraView::new(map_builder.player_start),
+            tileset,
         }
     }
 
     fn tick(&mut self) {
         clear_background(BLACK);
         self.player.update(&self.map, &mut self.camera);
-        self.map.render(&self.camera);
-        self.player.render(&self.camera);
+        self.map.render(&self.camera, &self.tileset);
+        self.player.render(&self.camera, &self.tileset);
     }
 }
 
 #[macroquad::main("Rusty Dungeon")]
 async fn main() {
-    let mut game = State::new();
+    let tileset = load_texture("assets/dungeonfont.png")
+        .await
+        .expect("Tile texture not found");
+    tileset.set_filter(FilterMode::Nearest);
+
+    let mut game = State::new(tileset);
     loop {
         game.tick();
         next_frame().await

@@ -39,13 +39,11 @@ pub fn tile_height() -> f32 {
 }
 
 pub fn tile_pos_x(x: i32) -> f32 {
-    let w = tile_width();
-    x as f32 * w + w / 2.
+    x as f32 * tile_width()
 }
 
 pub fn tile_pos_y(y: i32) -> f32 {
-    let h = tile_height();
-    y as f32 * h + h / 2.
+    y as f32 * tile_height()
 }
 
 pub trait Bracket {
@@ -69,5 +67,39 @@ impl Bracket for Rect {
                 f(Point::new(x, y));
             }
         }
+    }
+}
+
+#[derive(Debug)]
+pub struct TileSet {
+    pub texture: Texture2D,
+    pub tile_width: i32,
+    pub tile_height: i32,
+    pub columns: u32,
+}
+
+impl TileSet {
+    pub fn sprite_rect(&self, ix: u32) -> Rect {
+        let sw = self.tile_width as f32;
+        let sh = self.tile_height as f32;
+        let sx = (ix % self.columns) as f32 * sw as f32;
+        let sy = (ix / self.columns) as f32 * sh as f32;
+
+        Rect::new(sx, sy, sw, sh)
+    }
+
+    pub fn draw_tile(&self, sprite: u32, x: f32, y: f32) {
+        let spr_rect = self.sprite_rect(sprite);
+        draw_texture_ex(
+            self.texture,
+            x,
+            y,
+            WHITE,
+            DrawTextureParams {
+                dest_size: Some(tile_size()),
+                source: Some(spr_rect),
+                ..Default::default()
+            },
+        );
     }
 }
