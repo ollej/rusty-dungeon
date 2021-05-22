@@ -31,16 +31,18 @@ impl Map {
         self.in_bounds(point) && self.tiles[map_idx(point.x, point.y)] == TileType::Floor
     }
 
-    pub fn render(&self) {
-        for y in 0..SCREEN_HEIGHT {
-            for x in 0..SCREEN_WIDTH {
-                let idx = map_idx(x, y);
-                match self.tiles[idx] {
-                    TileType::Floor => {
-                        self.render_tile(x, y, YELLOW);
-                    }
-                    TileType::Wall => {
-                        self.render_tile(x, y, GREEN);
+    pub fn render(&self, camera: &CameraView) {
+        for y in camera.top_y..camera.bottom_y {
+            for x in camera.left_x..camera.right_x {
+                if self.in_bounds(Point::new(x, y)) {
+                    let idx = map_idx(x, y);
+                    match self.tiles[idx] {
+                        TileType::Floor => {
+                            self.render_tile(x - camera.left_x, y - camera.top_y, YELLOW);
+                        }
+                        TileType::Wall => {
+                            self.render_tile(x - camera.left_x, y - camera.top_y, GREEN);
+                        }
                     }
                 }
             }
