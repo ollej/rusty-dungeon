@@ -1,5 +1,6 @@
 mod macroquad_utils;
 mod map;
+mod map_builder;
 mod player;
 
 mod prelude {
@@ -8,6 +9,7 @@ mod prelude {
     pub const SCREEN_HEIGHT: i32 = 50;
     pub use crate::macroquad_utils::*;
     pub use crate::map::*;
+    pub use crate::map_builder::*;
     pub use crate::player::*;
 }
 
@@ -20,9 +22,10 @@ struct State {
 
 impl State {
     fn new() -> Self {
+        let map_builder = MapBuilder::new();
         Self {
-            map: Map::new(),
-            player: Player::new(Point::new(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)),
+            map: map_builder.map,
+            player: Player::new(map_builder.player_start),
         }
     }
 

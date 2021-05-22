@@ -47,3 +47,27 @@ pub fn tile_width() -> f32 {
 pub fn tile_height() -> f32 {
     screen_height() / SCREEN_HEIGHT as f32
 }
+
+pub trait Bracket {
+    fn center(&self) -> Point;
+    fn for_each<F>(&self, f: F)
+    where
+        F: FnMut(Point);
+}
+
+impl Bracket for Rect {
+    fn center(&self) -> Point {
+        Point::new((self.x + self.w / 2.) as i32, (self.y + self.h / 2.) as i32)
+    }
+
+    fn for_each<F>(&self, mut f: F)
+    where
+        F: FnMut(Point),
+    {
+        for y in self.y as i32..=self.bottom() as i32 {
+            for x in self.x as i32..=self.right() as i32 {
+                f(Point::new(x, y));
+            }
+        }
+    }
+}
