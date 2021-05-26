@@ -1,53 +1,63 @@
 mod camera_view;
+mod components;
 mod macroquad_utils;
 mod map;
 mod map_builder;
-mod player;
+mod spawner;
+mod systems;
 
 mod prelude {
+    pub use legion::systems::CommandBuffer;
+    pub use legion::world::SubWorld;
+    pub use legion::*;
     pub use macroquad::prelude::*;
     pub const SCREEN_WIDTH: i32 = 80;
     pub const SCREEN_HEIGHT: i32 = 50;
     pub const DISPLAY_WIDTH: i32 = SCREEN_WIDTH / 2;
     pub const DISPLAY_HEIGHT: i32 = SCREEN_HEIGHT / 2;
     pub use crate::camera_view::*;
+    pub use crate::components::*;
     pub use crate::macroquad_utils::*;
     pub use crate::map::*;
     pub use crate::map_builder::*;
-    pub use crate::player::*;
+    pub use crate::spawner::*;
+    pub use crate::systems::*;
 }
 
 use prelude::*;
 
 struct State {
-    map: Map,
-    player: Player,
-    camera: CameraView,
-    tileset: TileSet,
+    ecs: World,
+    resources: Resources,
+    systems: Schedule,
 }
 
 impl State {
     fn new(texture: Texture2D) -> Self {
-        let map_builder = MapBuilder::new();
         let tileset = TileSet {
             texture: texture,
             tile_width: 32,
             tile_height: 32,
             columns: 16,
         };
+        let mut ecs = World::default();
+        let mut resources = Resources::default();
+        let map_builder = MapBuilder::new();
+        spawn_player(&mut ecs, map_builder.player_start);
+        resources.insert(map_builder.map);
+        resources.insert(CameraView::new(map_builder.player_start));
+        resources.insert(tileset);
         Self {
-            map: map_builder.map,
-            player: Player::new(map_builder.player_start),
-            camera: CameraView::new(map_builder.player_start),
-            tileset,
+            ecs,
+            resources,
+            systems: build_scheduler(),
         }
     }
 
     fn tick(&mut self) {
         clear_background(BLACK);
-        self.player.update(&self.map, &mut self.camera);
-        self.map.render(&self.camera, &self.tileset);
-        self.player.render(&self.camera, &self.tileset);
+        self.resources.insert(get_last_key_pressed());
+        self.systems.execute(&mut self.ecs, &mut self.resources);
     }
 }
 
