@@ -15,6 +15,13 @@ impl Point {
     pub fn zero() -> Self {
         Self { x: 0, y: 0 }
     }
+
+    pub fn from_tuple(t: (f32, f32)) -> Self {
+        Self {
+            x: (t.0 / tile_width()) as i32,
+            y: (t.1 / tile_height()) as i32,
+        }
+    }
 }
 
 impl ops::Add<Point> for Point {
@@ -22,6 +29,15 @@ impl ops::Add<Point> for Point {
     fn add(mut self, rhs: Point) -> Point {
         self.x += rhs.x;
         self.y += rhs.y;
+        self
+    }
+}
+
+impl ops::Mul<i32> for Point {
+    type Output = Point;
+    fn mul(mut self, rhs: i32) -> Point {
+        self.x *= rhs;
+        self.y += rhs;
         self
     }
 }
@@ -142,6 +158,19 @@ where
     draw_text_ex(&text.to_string(), x, y, text_params);
 }
 
+pub fn print_pos<S>(pos: Point, text: S)
+where
+    S: ToString,
+{
+    let text_params = TextParams {
+        color: WHITE,
+        font_size: tile_height() as u16,
+        ..TextParams::default()
+    };
+    let x = tile_pos_x(pos.x);
+    let y = tile_pos_y(pos.y);
+    draw_text_ex(&text.to_string(), x, y, text_params);
+}
 pub fn bar_horizontal(
     pos: Point,
     width: i32,

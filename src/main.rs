@@ -70,6 +70,7 @@ impl State {
     fn tick(&mut self) {
         clear_background(BLACK);
         self.resources.insert(get_last_key_pressed());
+        self.resources.insert(Point::from_tuple(mouse_position()));
         let current_state = self.resources.get::<TurnState>().unwrap().clone();
         match current_state {
             TurnState::AwaitingInput => self
