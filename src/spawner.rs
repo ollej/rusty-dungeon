@@ -24,5 +24,6 @@ pub fn spawn_monster(ecs: &mut World, pos: Point) {
                 _ => TileSet::SPRITE_GOBLIN,
             },
         },
+        MovingRandomly {},
     ));
 }
