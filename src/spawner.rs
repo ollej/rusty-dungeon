@@ -8,6 +8,10 @@ pub fn spawn_player(ecs: &mut World, pos: Point) {
             color: WHITE,
             sprite: TileSet::SPRITE_PLAYER,
         },
+        Health {
+            current: 20,
+            max: 20,
+        },
     ));
 }
 

@@ -113,3 +113,47 @@ impl TileSet {
         );
     }
 }
+
+pub fn print_centered<S>(line: usize, text: S)
+where
+    S: ToString,
+{
+    print_color_centered(line, text, WHITE);
+}
+
+pub fn print_color_centered<S>(line: usize, text: S, text_color: Color)
+where
+    S: ToString,
+{
+    let text_params = TextParams {
+        color: text_color,
+        font_size: tile_height() as u16,
+        ..TextParams::default()
+    };
+    let dimensions = measure_text(
+        &text.to_string(),
+        Some(Font::default()),
+        text_params.font_size,
+        text_params.font_scale,
+    );
+    let x = screen_width() / 2. - dimensions.width / 2.;
+    let fudge = (dimensions.height - dimensions.offset_y) / 2.;
+    let y = tile_height() * line as f32 + fudge + dimensions.offset_y;
+    draw_text_ex(&text.to_string(), x, y, text_params);
+}
+
+pub fn bar_horizontal(
+    pos: Point,
+    width: i32,
+    current: i32,
+    max: i32,
+    color: Color,
+    background: Color,
+) {
+    let x = tile_pos_x(pos.x);
+    let y = tile_pos_y(pos.y);
+    let bar_width = tile_pos_x(width);
+    let current_width = current as f32 / max as f32 * bar_width;
+    draw_rectangle(x, y, bar_width, tile_height(), background);
+    draw_rectangle(x, y, current_width, tile_height(), color);
+}
