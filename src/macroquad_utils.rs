@@ -84,6 +84,10 @@ impl TileSet {
     pub const SPRITE_PLAYER: Sprite = 64;
     pub const SPRITE_WALL: Sprite = 35;
     pub const SPRITE_FLOOR: Sprite = 46;
+    pub const SPRITE_ETTIN: Sprite = 69;
+    pub const SPRITE_OGRE: Sprite = 79;
+    pub const SPRITE_ORC: Sprite = 111;
+    pub const SPRITE_GOBLIN: Sprite = 103;
 
     pub fn sprite_rect(&self, ix: Sprite) -> Rect {
         let sw = self.tile_width as f32;
