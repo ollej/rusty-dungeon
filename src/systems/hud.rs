@@ -10,7 +10,7 @@ pub fn hud(ecs: &SubWorld) {
     print_centered(1, "Explore the Dungeon. Cursor keys to move.");
     bar_horizontal(
         Point::zero(),
-        SCREEN_WIDTH,
+        DISPLAY_WIDTH,
         player_health.current,
         player_health.max,
         RED,
