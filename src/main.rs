@@ -91,9 +91,8 @@ impl State {
             TurnState::MonsterTurn => self
                 .monster_systems
                 .execute(&mut self.ecs, &mut self.resources),
-            TurnState::GameOver => {
-                self.game_over();
-            }
+            TurnState::GameOver => self.game_over(),
+            TurnState::Victory => self.victory(),
         }
     }
 
@@ -119,24 +118,48 @@ impl State {
         print_color_centered(9, GREEN, "Press 1 to play again.");
 
         if is_key_down(KeyCode::Key1) {
-            self.ecs = World::default();
-            self.resources = Resources::default();
-            let map_builder = MapBuilder::new();
-            let tileset = Self::tileset(self.texture);
-            spawn_player(&mut self.ecs, map_builder.player_start);
-            spawn_amulet_of_yala(&mut self.ecs, map_builder.amulet_start);
-            map_builder
-                .rooms
-                .iter()
-                .skip(1)
-                .map(|r| r.center())
-                .for_each(|pos| spawn_monster(&mut self.ecs, pos));
-            self.resources.insert(map_builder.map);
-            self.resources
-                .insert(CameraView::new(map_builder.player_start));
-            self.resources.insert(tileset);
-            self.resources.insert(TurnState::AwaitingInput);
+            self.reset_game_state();
         }
+    }
+
+    fn victory(&mut self) {
+        print_color_centered(2, GREEN, "You have won!");
+        print_color_centered(
+            4,
+            WHITE,
+            "You put on the Amulet of YALA and feel its power course through \
+            your veins.",
+        );
+        print_color_centered(
+            5,
+            WHITE,
+            "Your town is saved, and you can return to your normal life.",
+        );
+        print_color_centered(7, GREEN, "Press 1 to play again.");
+
+        if is_key_down(KeyCode::Key1) {
+            self.reset_game_state();
+        }
+    }
+
+    fn reset_game_state(&mut self) {
+        self.ecs = World::default();
+        self.resources = Resources::default();
+        let map_builder = MapBuilder::new();
+        let tileset = Self::tileset(self.texture);
+        spawn_player(&mut self.ecs, map_builder.player_start);
+        spawn_amulet_of_yala(&mut self.ecs, map_builder.amulet_start);
+        map_builder
+            .rooms
+            .iter()
+            .skip(1)
+            .map(|r| r.center())
+            .for_each(|pos| spawn_monster(&mut self.ecs, pos));
+        self.resources.insert(map_builder.map);
+        self.resources
+            .insert(CameraView::new(map_builder.player_start));
+        self.resources.insert(tileset);
+        self.resources.insert(TurnState::AwaitingInput);
     }
 }
 
