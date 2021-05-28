@@ -81,6 +81,36 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "cf1de2fe8c75bc145a2f577add951f8134889b4795d47466a54a5c846d691693"
 
 [[package]]
+name = "bracket-algorithm-traits"
+version = "0.8.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "af23ee41725dd41febe5f614851db8e5d44c07254dd91838b5ddf817060e2e73"
+dependencies = [
+ "bracket-geometry",
+ "smallvec",
+]
+
+[[package]]
+name = "bracket-geometry"
+version = "0.8.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c551a0c9ad538aa658a4b82d178e0fcaa151db74de5c92dce24fcacc756b82f8"
+dependencies = [
+ "ultraviolet",
+]
+
+[[package]]
+name = "bracket-pathfinding"
+version = "0.8.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6b713222141585b5e5cc6f0be1a0a473e1e339aa1300af91929ce6b1b2ed529c"
+dependencies = [
+ "bracket-algorithm-traits",
+ "bracket-geometry",
+ "smallvec",
+]
+
+[[package]]
 name = "bumpalo"
 version = "3.6.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -875,9 +905,19 @@ checksum = "08d43f7aa6b08d49f382cde6a7982047c3426db949b1424bc4b7ec9ae12c6ce2"
 name = "rusty-dungeon"
 version = "0.1.0"
 dependencies = [
+ "bracket-pathfinding",
  "getrandom",
  "legion",
  "macroquad",
+]
+
+[[package]]
+name = "safe_arch"
+version = "0.5.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c1ff3d6d9696af502cc3110dacce942840fb06ff4514cad92236ecc455f2ce05"
+dependencies = [
+ "bytemuck",
 ]
 
 [[package]]
@@ -1047,6 +1087,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "85e00391c1f3d171490a3f8bd79999b0002ae38d3da0d6a3a306c754b053d71b"
 
 [[package]]
+name = "ultraviolet"
+version = "0.7.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c6650a58414f856056ccc651abd3b9d80c384206250c3a621224497503a0f9f2"
+dependencies = [
+ "wide",
+]
+
+[[package]]
 name = "unicode-xid"
 version = "0.2.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1146,6 +1195,16 @@ checksum = "e828417b379f3df7111d3a2a9e5753706cae29c41f7c4029ee9fd77f3e09e582"
 dependencies = [
  "js-sys",
  "wasm-bindgen",
+]
+
+[[package]]
+name = "wide"
+version = "0.5.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "80b27c76ecc22bd81fe681d9c9eac81e002d7b7048105ee4608f57c4e92e9211"
+dependencies = [
+ "bytemuck",
+ "safe_arch",
 ]
 
 [[package]]

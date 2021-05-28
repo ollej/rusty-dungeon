@@ -28,15 +28,15 @@ impl MapBuilder {
 
     pub fn build_random_rooms(&mut self) {
         while self.rooms.len() < NUM_ROOMS {
-            let room = Rect::new(
-                rand::gen_range(1., (SCREEN_WIDTH - 10) as f32),
-                rand::gen_range(1., (SCREEN_HEIGHT - 10) as f32),
-                rand::gen_range(2., 10.),
-                rand::gen_range(2., 10.),
+            let room = Rect::with_size(
+                rand::gen_range(1, SCREEN_WIDTH - 10),
+                rand::gen_range(1, SCREEN_HEIGHT - 10),
+                rand::gen_range(2, 10),
+                rand::gen_range(2, 10),
             );
             let mut overlap = false;
             for r in self.rooms.iter() {
-                if r.overlaps(&room) {
+                if r.intersect(&room) {
                     overlap = true;
                 }
             }

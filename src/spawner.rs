@@ -9,8 +9,8 @@ pub fn spawn_player(ecs: &mut World, pos: Point) {
             sprite: TileSet::SPRITE_PLAYER,
         },
         Health {
-            current: 20,
-            max: 20,
+            current: 10,
+            max: 10,
         },
     ));
 }
@@ -27,7 +27,7 @@ pub fn spawn_monster(ecs: &mut World, pos: Point) {
             color: WHITE,
             sprite: sprite,
         },
-        MovingRandomly {},
+        ChasingPlayer {},
         Health {
             current: hp,
             max: hp,

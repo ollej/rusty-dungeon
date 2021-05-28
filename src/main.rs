@@ -8,6 +8,7 @@ mod systems;
 mod turn_state;
 
 mod prelude {
+    pub use bracket_pathfinding::prelude::*;
     pub use legion::systems::CommandBuffer;
     pub use legion::world::SubWorld;
     pub use legion::*;
@@ -70,7 +71,8 @@ impl State {
     fn tick(&mut self) {
         clear_background(BLACK);
         self.resources.insert(get_last_key_pressed());
-        self.resources.insert(Point::from_tuple(mouse_position()));
+        self.resources
+            .insert(Point::from_tuple(mouse_tile_position()));
         let current_state = self.resources.get::<TurnState>().unwrap().clone();
         match current_state {
             TurnState::AwaitingInput => self

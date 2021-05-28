@@ -1,46 +1,5 @@
 use crate::prelude::*;
-use std::ops;
-
-#[derive(Eq, PartialEq, Copy, Clone, Debug, Hash)]
-pub struct Point {
-    pub x: i32,
-    pub y: i32,
-}
-
-impl Point {
-    pub fn new(x: i32, y: i32) -> Self {
-        Self { x, y }
-    }
-
-    pub fn zero() -> Self {
-        Self { x: 0, y: 0 }
-    }
-
-    pub fn from_tuple(t: (f32, f32)) -> Self {
-        Self {
-            x: (t.0 / tile_width()) as i32,
-            y: (t.1 / tile_height()) as i32,
-        }
-    }
-}
-
-impl ops::Add<Point> for Point {
-    type Output = Point;
-    fn add(mut self, rhs: Point) -> Point {
-        self.x += rhs.x;
-        self.y += rhs.y;
-        self
-    }
-}
-
-impl ops::Mul<i32> for Point {
-    type Output = Point;
-    fn mul(mut self, rhs: i32) -> Point {
-        self.x *= rhs;
-        self.y += rhs;
-        self
-    }
-}
+use macroquad::math::Rect;
 
 pub fn tile_size() -> Vec2 {
     vec2(tile_width(), tile_height())
@@ -62,28 +21,12 @@ pub fn tile_pos_y(y: i32) -> f32 {
     y as f32 * tile_height()
 }
 
-pub trait Bracket {
-    fn center(&self) -> Point;
-    fn for_each<F>(&self, f: F)
-    where
-        F: FnMut(Point);
-}
-
-impl Bracket for Rect {
-    fn center(&self) -> Point {
-        Point::new((self.x + self.w / 2.) as i32, (self.y + self.h / 2.) as i32)
-    }
-
-    fn for_each<F>(&self, mut f: F)
-    where
-        F: FnMut(Point),
-    {
-        for y in self.y as i32..=self.bottom() as i32 {
-            for x in self.x as i32..=self.right() as i32 {
-                f(Point::new(x, y));
-            }
-        }
-    }
+pub fn mouse_tile_position() -> (i32, i32) {
+    let pos = mouse_position();
+    (
+        (pos.0 / tile_width()) as i32,
+        (pos.1 / tile_height()) as i32,
+    )
 }
 
 pub type Sprite = u16;
