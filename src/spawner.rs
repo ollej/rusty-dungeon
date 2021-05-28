@@ -43,3 +43,16 @@ fn goblin() -> (i32, String, Sprite) {
 fn orc() -> (i32, String, Sprite) {
     (2, "Orc".to_string(), TileSet::SPRITE_ORC)
 }
+
+pub fn spawn_amulet_of_yala(ecs: &mut World, pos: Point) {
+    ecs.push((
+        Item,
+        AmuletOfYala,
+        pos,
+        Render {
+            color: WHITE,
+            sprite: TileSet::SPRITE_AMULET,
+        },
+        Name("Amulet of Yala".to_string()),
+    ));
+}

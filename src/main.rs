@@ -45,6 +45,7 @@ impl State {
         let map_builder = MapBuilder::new();
         let tileset = Self::tileset(texture);
         spawn_player(&mut ecs, map_builder.player_start);
+        spawn_amulet_of_yala(&mut ecs, map_builder.amulet_start);
         map_builder
             .rooms
             .iter()
@@ -123,6 +124,7 @@ impl State {
             let map_builder = MapBuilder::new();
             let tileset = Self::tileset(self.texture);
             spawn_player(&mut self.ecs, map_builder.player_start);
+            spawn_amulet_of_yala(&mut self.ecs, map_builder.amulet_start);
             map_builder
                 .rooms
                 .iter()
