@@ -18,7 +18,7 @@ pub fn hud(ecs: &SubWorld) {
     );
     print_color_centered(
         0,
-        format!("Health: {} / {}", player_health.current, player_health.max),
         WHITE,
+        format!("Health: {} / {}", player_health.current, player_health.max),
     );
 }

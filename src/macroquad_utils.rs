@@ -77,10 +77,10 @@ pub fn print_centered<S>(line: usize, text: S)
 where
     S: ToString,
 {
-    print_color_centered(line, text, WHITE);
+    print_color_centered(line, WHITE, text);
 }
 
-pub fn print_color_centered<S>(line: usize, text: S, text_color: Color)
+pub fn print_color_centered<S>(line: usize, text_color: Color, text: S)
 where
     S: ToString,
 {

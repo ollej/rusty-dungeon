@@ -35,19 +35,15 @@ struct State {
     input_systems: Schedule,
     player_systems: Schedule,
     monster_systems: Schedule,
+    texture: Texture2D,
 }
 
 impl State {
     fn new(texture: Texture2D) -> Self {
-        let tileset = TileSet {
-            texture: texture,
-            tile_width: 32,
-            tile_height: 32,
-            columns: 16,
-        };
         let mut ecs = World::default();
         let mut resources = Resources::default();
         let map_builder = MapBuilder::new();
+        let tileset = Self::tileset(texture);
         spawn_player(&mut ecs, map_builder.player_start);
         map_builder
             .rooms
@@ -65,6 +61,16 @@ impl State {
             input_systems: build_input_scheduler(),
             player_systems: build_player_scheduler(),
             monster_systems: build_monster_scheduler(),
+            texture,
+        }
+    }
+
+    fn tileset(texture: Texture2D) -> TileSet {
+        TileSet {
+            texture: texture,
+            tile_width: 32,
+            tile_height: 32,
+            columns: 16,
         }
     }
 
@@ -84,6 +90,50 @@ impl State {
             TurnState::MonsterTurn => self
                 .monster_systems
                 .execute(&mut self.ecs, &mut self.resources),
+            TurnState::GameOver => {
+                self.game_over();
+            }
+        }
+    }
+
+    fn game_over(&mut self) {
+        print_color_centered(2, RED, "Your quest has ended.");
+        print_color_centered(
+            4,
+            WHITE,
+            "Slain by a monster, your hero's journey has come to a \
+            premature end.",
+        );
+        print_color_centered(
+            5,
+            WHITE,
+            "The Amulet of YALA remains unclaimed, and your home town \
+            is not saved.",
+        );
+        print_color_centered(
+            8,
+            YELLOW,
+            "Don't worry, you can always try again with a new hero.",
+        );
+        print_color_centered(9, GREEN, "Press 1 to play again.");
+
+        if is_key_down(KeyCode::Key1) {
+            self.ecs = World::default();
+            self.resources = Resources::default();
+            let map_builder = MapBuilder::new();
+            let tileset = Self::tileset(self.texture);
+            spawn_player(&mut self.ecs, map_builder.player_start);
+            map_builder
+                .rooms
+                .iter()
+                .skip(1)
+                .map(|r| r.center())
+                .for_each(|pos| spawn_monster(&mut self.ecs, pos));
+            self.resources.insert(map_builder.map);
+            self.resources
+                .insert(CameraView::new(map_builder.player_start));
+            self.resources.insert(tileset);
+            self.resources.insert(TurnState::AwaitingInput);
         }
     }
 }
