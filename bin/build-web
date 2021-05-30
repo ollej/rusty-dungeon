@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+
+set -euo pipefail
+
+cargo build --release --target wasm32-unknown-unknown
+mkdir -p demo
+cp target/wasm32-unknown-unknown/release/rusty-dungeon.wasm demo/
+cp -pR assets demo/

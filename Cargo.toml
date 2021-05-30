@@ -21,3 +21,8 @@ opt-level = 'z'
 lto = true
 panic = 'abort'
 codegen-units = 1
+
+[package.metadata.scripts]
+build-web = "bin/build-web"
+serve-web = "bin/serve-web"
+
