@@ -15,13 +15,22 @@ pub fn map_render(
     for y in camera.top_y..=camera.bottom_y {
         for x in camera.left_x..camera.right_x {
             let pt = Point::new(x, y);
-            if map.in_bounds(pt) && player_fov.visible_tiles.contains(&pt) {
-                let idx = map_idx(x, y);
+            let offset = Point::new(camera.left_x, camera.top_y);
+            let idx = map_idx(x, y);
+            if map.in_bounds(pt)
+                && (player_fov.visible_tiles.contains(&pt) | map.revealed_tiles[idx])
+            {
+                let tint = if player_fov.visible_tiles.contains(&pt) {
+                    WHITE
+                } else {
+                    DARKGRAY
+                };
                 let sprite: Sprite = match map.tiles[idx] {
                     TileType::Floor => TileSet::SPRITE_FLOOR,
                     TileType::Wall => TileSet::SPRITE_WALL,
                 };
-                tileset.draw_tile(sprite, WHITE, x - camera.left_x, y - camera.top_y);
+                let pos = pt - offset;
+                tileset.draw_tile(sprite, tint, pos.x, pos.y);
             }
         }
     }
