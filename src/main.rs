@@ -28,7 +28,6 @@ mod prelude {
 }
 
 use prelude::*;
-use std::time::SystemTime;
 
 struct State {
     ecs: World,
@@ -41,12 +40,7 @@ struct State {
 
 impl State {
     fn new(texture: Texture2D) -> Self {
-        rand::srand(
-            SystemTime::now()
-                .duration_since(SystemTime::UNIX_EPOCH)
-                .unwrap()
-                .as_secs(),
-        );
+        rand::srand(miniquad::date::now() as u64);
         let mut ecs = World::default();
         let mut resources = Resources::default();
         let map_builder = MapBuilder::new();
