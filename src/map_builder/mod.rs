@@ -51,6 +51,17 @@ impl MapBuilder {
         )
     }
 
+    fn add_boundaries(&mut self) {
+        for x in 1..SCREEN_WIDTH {
+            self.map.tiles[map_idx(x, 1)] = TileType::Wall;
+            self.map.tiles[map_idx(x, SCREEN_HEIGHT - 1)] = TileType::Wall;
+        }
+        for y in 1..SCREEN_HEIGHT {
+            self.map.tiles[map_idx(1, y)] = TileType::Wall;
+            self.map.tiles[map_idx(SCREEN_WIDTH - 1, y)] = TileType::Wall;
+        }
+    }
+
     pub fn build_random_rooms(&mut self) {
         while self.rooms.len() < NUM_ROOMS {
             let room = Rect::with_size(
