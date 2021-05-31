@@ -21,6 +21,14 @@ pub fn tile_pos_y(y: i32) -> f32 {
     y as f32 * tile_height()
 }
 
+pub fn text_pos_x(x: i32) -> f32 {
+    x as f32 * screen_width() / SCREEN_WIDTH as f32
+}
+
+pub fn text_pos_y(y: i32) -> f32 {
+    y as f32 * screen_height() / SCREEN_HEIGHT as f32
+}
+
 pub fn mouse_tile_position() -> (i32, i32) {
     let pos = mouse_position();
     (
@@ -74,14 +82,29 @@ impl TileSet {
     }
 }
 
-pub fn print_centered<S>(line: usize, text: S)
+pub fn print_centered<S>(line: i32, text: S)
 where
     S: ToString,
 {
     print_color_centered(line, WHITE, text);
 }
 
-pub fn print_color_centered<S>(line: usize, text_color: Color, text: S)
+pub fn print_color_centered<S>(line: i32, text_color: Color, text: S)
+where
+    S: ToString,
+{
+    let x = SCREEN_WIDTH / 2 - (text.to_string().len() / 2) as i32;
+    print_color_pos(Point::new(x, line), text_color, text);
+}
+
+pub fn print_pos<S>(pos: Point, text: S)
+where
+    S: ToString,
+{
+    print_color_pos(pos, WHITE, text);
+}
+
+pub fn print_color_pos<S>(pos: Point, text_color: Color, text: S)
 where
     S: ToString,
 {
@@ -96,23 +119,9 @@ where
         text_params.font_size,
         text_params.font_scale,
     );
-    let x = screen_width() / 2. - dimensions.width / 2.;
+    let x = text_pos_x(pos.x);
     let fudge = (dimensions.height - dimensions.offset_y) / 2.;
-    let y = tile_height() * line as f32 + fudge + dimensions.offset_y;
-    draw_text_ex(&text.to_string(), x, y, text_params);
-}
-
-pub fn print_pos<S>(pos: Point, text: S)
-where
-    S: ToString,
-{
-    let text_params = TextParams {
-        color: WHITE,
-        font_size: tile_height() as u16,
-        ..TextParams::default()
-    };
-    let x = tile_pos_x(pos.x);
-    let y = tile_pos_y(pos.y);
+    let y = tile_pos_y(pos.y) + fudge + dimensions.offset_y;
     draw_text_ex(&text.to_string(), x, y, text_params);
 }
 
