@@ -49,6 +49,7 @@ impl MapArchitect for DrunkardsWalkArchitect {
                 .filter(|(_, distance)| *distance > &2000.0)
                 .for_each(|(idx, _)| mb.map.tiles[idx] = TileType::Wall);
         }
+        mb.add_boundaries();
         mb.monster_spawns = mb.spawn_monsters(&center);
         mb.player_start = center;
         mb.amulet_start = mb.find_most_distant();
