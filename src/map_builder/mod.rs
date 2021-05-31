@@ -1,9 +1,11 @@
 mod automata;
+mod drunkard;
 mod empty;
 mod rooms;
 
 use crate::prelude::*;
 use automata::CellularAutomataArchitect;
+use drunkard::DrunkardsWalkArchitect;
 use rooms::RoomsArchitect;
 
 const NUM_ROOMS: usize = 20;
@@ -22,7 +24,7 @@ pub struct MapBuilder {
 
 impl MapBuilder {
     pub fn new() -> Self {
-        let mut architect = CellularAutomataArchitect {};
+        let mut architect = DrunkardsWalkArchitect {};
         architect.new()
     }
 
