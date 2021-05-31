@@ -115,6 +115,7 @@ where
     let y = tile_pos_y(pos.y);
     draw_text_ex(&text.to_string(), x, y, text_params);
 }
+
 pub fn bar_horizontal(
     pos: Point,
     width: i32,
@@ -129,4 +130,17 @@ pub fn bar_horizontal(
     let current_width = current as f32 / max as f32 * bar_width;
     draw_rectangle(x, y, bar_width, tile_height(), background);
     draw_rectangle(x, y, current_width, tile_height(), color);
+}
+
+pub fn random_slice_index<T>(slice: &[T]) -> Option<usize> {
+    if slice.is_empty() {
+        None
+    } else {
+        let size = slice.len();
+        if size == 1 {
+            Some(0)
+        } else {
+            Some(rand::gen_range(1, size as i32) as usize - 1)
+        }
+    }
 }
