@@ -1,8 +1,6 @@
 use super::MapArchitect;
 use crate::prelude::*;
-use macroquad::rand::ChooseRandom;
 
-const NUM_MONSTERS: usize = 50;
 const STAGGER_DISTANCE: usize = 400;
 const NUM_TILES: usize = (SCREEN_WIDTH * SCREEN_HEIGHT) as usize;
 const DESIRED_FLOOR: usize = NUM_TILES / 3;
