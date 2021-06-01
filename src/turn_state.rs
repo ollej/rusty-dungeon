@@ -5,4 +5,5 @@ pub enum TurnState {
     MonsterTurn,
     GameOver,
     Victory,
+    NextLevel,
 }

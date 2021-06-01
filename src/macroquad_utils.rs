@@ -87,15 +87,23 @@ pub fn print_centered<S>(line: i32, text: S)
 where
     S: ToString,
 {
-    print_color_centered(line, WHITE, text);
+    print_color_centered(line, text, WHITE);
 }
 
-pub fn print_color_centered<S>(line: i32, text_color: Color, text: S)
+pub fn print_color_centered<S>(line: i32, text: S, text_color: Color)
 where
     S: ToString,
 {
     let x = SCREEN_WIDTH / 2 - (text.to_string().len() / 2) as i32;
     print_color_pos(Point::new(x, line), text, text_color);
+}
+
+pub fn print_color_right<S>(pos: Point, text: S, text_color: Color)
+where
+    S: ToString,
+{
+    let offset = Point::new(text.to_string().len() as i32, 0);
+    print_color_pos(pos - offset, text, text_color);
 }
 
 pub fn print_pos<S>(pos: Point, text: S)

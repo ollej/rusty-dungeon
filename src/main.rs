@@ -46,7 +46,6 @@ impl State {
         let mut map_builder = MapBuilder::new();
         let tileset = Self::tileset(texture);
         spawn_player(&mut ecs, map_builder.player_start);
-        //spawn_amulet_of_yala(&mut ecs, map_builder.amulet_start);
         let exit_idx = map_builder.map.point2d_to_index(map_builder.amulet_start);
         map_builder.map.tiles[exit_idx] = TileType::Exit;
         map_builder
@@ -95,29 +94,30 @@ impl State {
                 .execute(&mut self.ecs, &mut self.resources),
             TurnState::GameOver => self.game_over(),
             TurnState::Victory => self.victory(),
+            TurnState::NextLevel => self.advance_level(),
         }
     }
 
     fn game_over(&mut self) {
-        print_color_centered(2, RED, "Your quest has ended.");
+        print_color_centered(2, "Your quest has ended.", RED);
         print_color_centered(
             4,
-            WHITE,
             "Slain by a monster, your hero's journey has come to a \
             premature end.",
+            WHITE,
         );
         print_color_centered(
             5,
-            WHITE,
             "The Amulet of YALA remains unclaimed, and your home town \
             is not saved.",
+            WHITE,
         );
         print_color_centered(
             8,
-            YELLOW,
             "Don't worry, you can always try again with a new hero.",
+            YELLOW,
         );
-        print_color_centered(9, GREEN, "Press 1 to play again.");
+        print_color_centered(9, "Press 1 to play again.", GREEN);
 
         if is_key_down(KeyCode::Key1) {
             self.reset_game_state();
@@ -125,23 +125,85 @@ impl State {
     }
 
     fn victory(&mut self) {
-        print_color_centered(2, GREEN, "You have won!");
+        print_color_centered(2, "You have won!", GREEN);
         print_color_centered(
             4,
-            WHITE,
             "You put on the Amulet of YALA and feel its power course through \
             your veins.",
+            WHITE,
         );
         print_color_centered(
             5,
-            WHITE,
             "Your town is saved, and you can return to your normal life.",
+            WHITE,
         );
-        print_color_centered(7, GREEN, "Press 1 to play again.");
+        print_color_centered(7, "Press 1 to play again.", GREEN);
 
         if is_key_down(KeyCode::Key1) {
             self.reset_game_state();
         }
+    }
+
+    fn advance_level(&mut self) {
+        let player_entity = *<Entity>::query()
+            .filter(component::<Player>())
+            .iter(&mut self.ecs)
+            .nth(0)
+            .unwrap();
+
+        use std::collections::HashSet;
+        let mut entities_to_keep = HashSet::new();
+        entities_to_keep.insert(player_entity);
+
+        <(Entity, &Carried)>::query()
+            .iter(&self.ecs)
+            .filter(|(_e, carry)| carry.0 == player_entity)
+            .map(|(e, _carry)| *e)
+            .for_each(|e| {
+                entities_to_keep.insert(e);
+            });
+
+        let mut cb = CommandBuffer::new(&mut self.ecs);
+        for e in Entity::query().iter(&self.ecs) {
+            if !entities_to_keep.contains(e) {
+                cb.remove(*e);
+            }
+        }
+        cb.flush(&mut self.ecs);
+
+        <&mut FieldOfView>::query()
+            .iter_mut(&mut self.ecs)
+            .for_each(|fov| fov.is_dirty = true);
+
+        let mut map_builder = MapBuilder::new();
+        let mut map_level = 0;
+        <(&mut Player, &mut Point)>::query()
+            .iter_mut(&mut self.ecs)
+            .for_each(|(player, pos)| {
+                player.map_level += 1;
+                map_level = player.map_level;
+                pos.x = map_builder.player_start.x;
+                pos.y = map_builder.player_start.y;
+            });
+
+        if map_level == 2 {
+            spawn_amulet_of_yala(&mut self.ecs, map_builder.amulet_start);
+        } else {
+            let exit_idx = map_builder.map.point2d_to_index(map_builder.amulet_start);
+            map_builder.map.tiles[exit_idx] = TileType::Exit;
+        }
+
+        map_builder
+            .monster_spawns
+            .iter()
+            .for_each(|pos| spawn_entity(&mut self.ecs, *pos));
+        self.resources.insert(map_builder.map);
+        self.resources
+            .insert(CameraView::new(map_builder.player_start));
+        let tileset = Self::tileset(self.texture);
+        self.resources.insert(tileset);
+        self.resources.insert(TurnState::AwaitingInput);
+        self.resources.insert(map_builder.theme);
     }
 
     fn reset_game_state(&mut self) {
@@ -150,7 +212,6 @@ impl State {
         let mut map_builder = MapBuilder::new();
         let tileset = Self::tileset(self.texture);
         spawn_player(&mut self.ecs, map_builder.player_start);
-        //spawn_amulet_of_yala(&mut self.ecs, map_builder.amulet_start);
         let exit_idx = map_builder.map.point2d_to_index(map_builder.amulet_start);
         map_builder.map.tiles[exit_idx] = TileType::Exit;
         map_builder
