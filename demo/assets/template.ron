@@ -1,0 +1,34 @@
+(
+    entities : [
+        (
+            entity_type: Item,
+            name : "Healing Potion", sprite : 33, levels : [ 0, 1, 2 ],
+            provides: [ ("Healing", 6) ],
+            frequency: 2
+        ),
+        (
+            entity_type: Item,
+            name : "Weak Healing Potion", sprite : 33, levels : [ 0, 1, 2 ],
+            provides: [ ("Healing", 2) ],
+            frequency: 2
+        ),
+        (
+            entity_type: Item,
+            name : "Dungeon Map", sprite : 123, levels : [ 0, 1, 2 ],
+            provides: [ ("MagicMap", 0) ],
+            frequency: 1
+        ),
+        (
+            entity_type: Enemy,
+            name : "Goblin", sprite : 103, levels : [ 0, 1, 2 ],
+            hp : 1,
+            frequency: 3
+        ),
+        (
+            entity_type: Enemy,
+            name : "Orc", sprite : 111, levels : [ 0, 1, 2 ],
+            hp : 2,
+            frequency: 2
+        ),
+    ],
+)
