@@ -43,10 +43,12 @@ impl State {
         rand::srand(miniquad::date::now() as u64);
         let mut ecs = World::default();
         let mut resources = Resources::default();
-        let map_builder = MapBuilder::new();
+        let mut map_builder = MapBuilder::new();
         let tileset = Self::tileset(texture);
         spawn_player(&mut ecs, map_builder.player_start);
-        spawn_amulet_of_yala(&mut ecs, map_builder.amulet_start);
+        //spawn_amulet_of_yala(&mut ecs, map_builder.amulet_start);
+        let exit_idx = map_builder.map.point2d_to_index(map_builder.amulet_start);
+        map_builder.map.tiles[exit_idx] = TileType::Exit;
         map_builder
             .monster_spawns
             .iter()
@@ -145,10 +147,12 @@ impl State {
     fn reset_game_state(&mut self) {
         self.ecs = World::default();
         self.resources = Resources::default();
-        let map_builder = MapBuilder::new();
+        let mut map_builder = MapBuilder::new();
         let tileset = Self::tileset(self.texture);
         spawn_player(&mut self.ecs, map_builder.player_start);
-        spawn_amulet_of_yala(&mut self.ecs, map_builder.amulet_start);
+        //spawn_amulet_of_yala(&mut self.ecs, map_builder.amulet_start);
+        let exit_idx = map_builder.map.point2d_to_index(map_builder.amulet_start);
+        map_builder.map.tiles[exit_idx] = TileType::Exit;
         map_builder
             .monster_spawns
             .iter()

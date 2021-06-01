@@ -13,6 +13,7 @@ impl MapTheme for DungeonTheme {
         match tile_type {
             TileType::Floor => TileSet::SPRITE_FLOOR,
             TileType::Wall => TileSet::SPRITE_WALL,
+            TileType::Exit => TileSet::SPRITE_STAIRS,
         }
     }
 }
@@ -24,6 +25,7 @@ impl MapTheme for ForestTheme {
         match tile_type {
             TileType::Floor => TileSet::SPRITE_GROUND,
             TileType::Wall => TileSet::SPRITE_TREE,
+            TileType::Exit => TileSet::SPRITE_STAIRS,
         }
     }
 }
