@@ -94,17 +94,17 @@ where
     S: ToString,
 {
     let x = SCREEN_WIDTH / 2 - (text.to_string().len() / 2) as i32;
-    print_color_pos(Point::new(x, line), text_color, text);
+    print_color_pos(Point::new(x, line), text, text_color);
 }
 
 pub fn print_pos<S>(pos: Point, text: S)
 where
     S: ToString,
 {
-    print_color_pos(pos, WHITE, text);
+    print_color_pos(pos, text, WHITE);
 }
 
-pub fn print_color_pos<S>(pos: Point, text_color: Color, text: S)
+pub fn print_color_pos<S>(pos: Point, text: S, text_color: Color)
 where
     S: ToString,
 {
