@@ -55,6 +55,7 @@ impl State {
         resources.insert(CameraView::new(map_builder.player_start));
         resources.insert(tileset);
         resources.insert(TurnState::AwaitingInput);
+        resources.insert(map_builder.theme);
         Self {
             ecs,
             resources,
@@ -157,6 +158,7 @@ impl State {
             .insert(CameraView::new(map_builder.player_start));
         self.resources.insert(tileset);
         self.resources.insert(TurnState::AwaitingInput);
+        self.resources.insert(map_builder.theme);
     }
 }
 

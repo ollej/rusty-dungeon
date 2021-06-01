@@ -49,8 +49,10 @@ pub struct TileSet {
 
 impl TileSet {
     pub const SPRITE_PLAYER: Sprite = 64;
+    pub const SPRITE_TREE: Sprite = 34;
     pub const SPRITE_WALL: Sprite = 35;
     pub const SPRITE_FLOOR: Sprite = 46;
+    pub const SPRITE_GROUND: Sprite = 59;
     pub const SPRITE_ETTIN: Sprite = 69;
     pub const SPRITE_OGRE: Sprite = 79;
     pub const SPRITE_ORC: Sprite = 111;

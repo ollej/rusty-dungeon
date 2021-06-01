@@ -8,6 +8,7 @@ pub fn map_render(
     #[resource] map: &Map,
     #[resource] camera: &CameraView,
     #[resource] tileset: &TileSet,
+    #[resource] theme: &Box<dyn MapTheme>,
 ) {
     let mut fov = <&FieldOfView>::query().filter(component::<Player>());
     let player_fov = fov.iter(ecs).nth(0).unwrap();
@@ -25,10 +26,7 @@ pub fn map_render(
                 } else {
                     DARKGRAY
                 };
-                let sprite: Sprite = match map.tiles[idx] {
-                    TileType::Floor => TileSet::SPRITE_FLOOR,
-                    TileType::Wall => TileSet::SPRITE_WALL,
-                };
+                let sprite = theme.tile_to_render(map.tiles[idx]);
                 let pos = pt - offset;
                 tileset.draw_tile(sprite, tint, pos.x, pos.y);
             }
