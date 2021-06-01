@@ -25,10 +25,6 @@ pub fn text_pos_x(x: i32) -> f32 {
     x as f32 * screen_width() / SCREEN_WIDTH as f32
 }
 
-pub fn text_pos_y(y: i32) -> f32 {
-    y as f32 * screen_height() / SCREEN_HEIGHT as f32
-}
-
 pub fn mouse_tile_position() -> (i32, i32) {
     let pos = mouse_position();
     (
