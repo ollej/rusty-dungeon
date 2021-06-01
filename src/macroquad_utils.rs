@@ -49,6 +49,7 @@ pub struct TileSet {
 
 impl TileSet {
     pub const SPRITE_PLAYER: Sprite = 64;
+    pub const SPRITE_POTION: Sprite = 33;
     pub const SPRITE_TREE: Sprite = 34;
     pub const SPRITE_WALL: Sprite = 35;
     pub const SPRITE_FLOOR: Sprite = 46;
@@ -57,6 +58,7 @@ impl TileSet {
     pub const SPRITE_OGRE: Sprite = 79;
     pub const SPRITE_ORC: Sprite = 111;
     pub const SPRITE_GOBLIN: Sprite = 103;
+    pub const SPRITE_SCROLL: Sprite = 123;
     pub const SPRITE_AMULET: Sprite = 124;
 
     pub fn sprite_rect(&self, ix: Sprite) -> Rect {

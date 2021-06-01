@@ -16,6 +16,15 @@ pub fn spawn_player(ecs: &mut World, pos: Point) {
     ));
 }
 
+pub fn spawn_entity(ecs: &mut World, pos: Point) {
+    let roll = rand::gen_range(1, 6);
+    match roll {
+        1 => spawn_healing_potion(ecs, pos),
+        2 => spawn_magic_mapper(ecs, pos),
+        _ => spawn_monster(ecs, pos),
+    }
+}
+
 pub fn spawn_monster(ecs: &mut World, pos: Point) {
     let (hp, name, sprite) = match rand::gen_range(1, 10) {
         1..=8 => goblin(),
@@ -56,5 +65,31 @@ pub fn spawn_amulet_of_yala(ecs: &mut World, pos: Point) {
             sprite: TileSet::SPRITE_AMULET,
         },
         Name("Amulet of Yala".to_string()),
+    ));
+}
+
+pub fn spawn_healing_potion(ecs: &mut World, pos: Point) {
+    ecs.push((
+        Item,
+        pos,
+        Render {
+            color: WHITE,
+            sprite: TileSet::SPRITE_POTION,
+        },
+        Name("Healing Potion".to_string()),
+        ProvidesHealing { amount: 6 },
+    ));
+}
+
+pub fn spawn_magic_mapper(ecs: &mut World, pos: Point) {
+    ecs.push((
+        Item,
+        pos,
+        Render {
+            color: WHITE,
+            sprite: TileSet::SPRITE_SCROLL,
+        },
+        Name("Dungeon Map".to_string()),
+        ProvidesDungeonMap {},
     ));
 }
