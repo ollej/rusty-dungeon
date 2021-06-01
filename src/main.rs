@@ -39,7 +39,7 @@ struct State {
 }
 
 impl State {
-    fn new(texture: Texture2D) -> Self {
+    async fn new(texture: Texture2D) -> Self {
         rand::srand(miniquad::date::now() as u64);
         let mut ecs = World::default();
         let mut resources = Resources::default();
@@ -48,10 +48,7 @@ impl State {
         spawn_player(&mut ecs, map_builder.player_start);
         let exit_idx = map_builder.map.point2d_to_index(map_builder.amulet_start);
         map_builder.map.tiles[exit_idx] = TileType::Exit;
-        map_builder
-            .monster_spawns
-            .iter()
-            .for_each(|pos| spawn_entity(&mut ecs, *pos));
+        spawn_level(&mut ecs, 0, &map_builder.monster_spawns).await;
         resources.insert(map_builder.map);
         resources.insert(CameraView::new(map_builder.player_start));
         resources.insert(tileset);
@@ -76,7 +73,7 @@ impl State {
         }
     }
 
-    fn tick(&mut self) {
+    async fn tick(&mut self) {
         clear_background(BLACK);
         self.resources.insert(get_last_key_pressed());
         self.resources
@@ -92,13 +89,13 @@ impl State {
             TurnState::MonsterTurn => self
                 .monster_systems
                 .execute(&mut self.ecs, &mut self.resources),
-            TurnState::GameOver => self.game_over(),
-            TurnState::Victory => self.victory(),
-            TurnState::NextLevel => self.advance_level(),
+            TurnState::GameOver => self.game_over().await,
+            TurnState::Victory => self.victory().await,
+            TurnState::NextLevel => self.advance_level().await,
         }
     }
 
-    fn game_over(&mut self) {
+    async fn game_over(&mut self) {
         print_color_centered(2, "Your quest has ended.", RED);
         print_color_centered(
             4,
@@ -120,11 +117,11 @@ impl State {
         print_color_centered(9, "Press 1 to play again.", GREEN);
 
         if is_key_down(KeyCode::Key1) {
-            self.reset_game_state();
+            self.reset_game_state().await;
         }
     }
 
-    fn victory(&mut self) {
+    async fn victory(&mut self) {
         print_color_centered(2, "You have won!", GREEN);
         print_color_centered(
             4,
@@ -140,11 +137,11 @@ impl State {
         print_color_centered(7, "Press 1 to play again.", GREEN);
 
         if is_key_down(KeyCode::Key1) {
-            self.reset_game_state();
+            self.reset_game_state().await;
         }
     }
 
-    fn advance_level(&mut self) {
+    async fn advance_level(&mut self) {
         let player_entity = *<Entity>::query()
             .filter(component::<Player>())
             .iter(&mut self.ecs)
@@ -193,10 +190,12 @@ impl State {
             map_builder.map.tiles[exit_idx] = TileType::Exit;
         }
 
-        map_builder
-            .monster_spawns
-            .iter()
-            .for_each(|pos| spawn_entity(&mut self.ecs, *pos));
+        spawn_level(
+            &mut self.ecs,
+            map_level as usize,
+            &map_builder.monster_spawns,
+        )
+        .await;
         self.resources.insert(map_builder.map);
         self.resources
             .insert(CameraView::new(map_builder.player_start));
@@ -206,7 +205,7 @@ impl State {
         self.resources.insert(map_builder.theme);
     }
 
-    fn reset_game_state(&mut self) {
+    async fn reset_game_state(&mut self) {
         self.ecs = World::default();
         self.resources = Resources::default();
         let mut map_builder = MapBuilder::new();
@@ -214,10 +213,7 @@ impl State {
         spawn_player(&mut self.ecs, map_builder.player_start);
         let exit_idx = map_builder.map.point2d_to_index(map_builder.amulet_start);
         map_builder.map.tiles[exit_idx] = TileType::Exit;
-        map_builder
-            .monster_spawns
-            .iter()
-            .for_each(|pos| spawn_entity(&mut self.ecs, *pos));
+        spawn_level(&mut self.ecs, 0, &map_builder.monster_spawns).await;
         self.resources.insert(map_builder.map);
         self.resources
             .insert(CameraView::new(map_builder.player_start));
@@ -234,9 +230,9 @@ async fn main() {
         .expect("Tile texture not found");
     tileset.set_filter(FilterMode::Nearest);
 
-    let mut game = State::new(tileset);
+    let mut game = State::new(tileset).await;
     loop {
-        game.tick();
+        game.tick().await;
         next_frame().await
     }
 }
