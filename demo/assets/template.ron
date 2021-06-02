@@ -19,16 +19,50 @@
             frequency: 1
         ),
         (
+            entity_type: Item,
+            name : "Rusty Sword", sprite: 115, levels: [ 0, 1, 2 ],
+            frequency: 1,
+            base_damage: 1
+        ),
+        (
+            entity_type: Item,
+            name : "Shiny Sword", sprite: 83, levels: [ 0, 1, 2 ],
+            frequency: 1,
+            base_damage: 2
+        ),
+        (
+            entity_type: Item,
+            name : "Huge Sword", sprite: 47, levels: [ 1, 2 ],
+            frequency: 1,
+            base_damage: 3
+        ),
+        (
             entity_type: Enemy,
-            name : "Goblin", sprite : 103, levels : [ 0, 1, 2 ],
+            name : "Goblin", sprite : 103, levels : [ 0 ],
             hp : 1,
-            frequency: 3
+            frequency: 3,
+            base_damage: 1
         ),
         (
             entity_type: Enemy,
             name : "Orc", sprite : 111, levels : [ 0, 1, 2 ],
             hp : 2,
-            frequency: 2
+            frequency: 2,
+            base_damage: 1
+        ),
+        (
+            entity_type: Enemy,
+            name : "Ogre", sprite : 79, levels : [ 1, 2 ],
+            hp : 5,
+            frequency: 1,
+            base_damage: 2
+        ),
+        (
+            entity_type: Enemy,
+            name : "Ettin", sprite : 69, levels : [ 2 ],
+            hp : 10,
+            frequency: 1,
+            base_damage: 3
         ),
     ],
 )
