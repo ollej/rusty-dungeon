@@ -20,9 +20,21 @@
         ),
         (
             entity_type: Item,
-            name : "Rusty Sword", sprite: 47, levels: [ 0, 1, 2 ],
+            name : "Rusty Sword", sprite: 115, levels: [ 0, 1, 2 ],
             frequency: 1,
             base_damage: 1
+        ),
+        (
+            entity_type: Item,
+            name : "Shiny Sword", sprite: 83, levels: [ 0, 1, 2 ],
+            frequency: 1,
+            base_damage: 2
+        ),
+        (
+            entity_type: Item,
+            name : "Huge Sword", sprite: 47, levels: [ 1, 2 ],
+            frequency: 1,
+            base_damage: 3
         ),
         (
             entity_type: Enemy,
