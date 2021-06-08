@@ -26,7 +26,7 @@ pub fn map_render(
                 } else {
                     DARKGRAY
                 };
-                let sprite = theme.tile_to_render(map.tiles[idx]);
+                let sprite = theme.tile_to_render(map.tiles[idx], idx);
                 let pos = pt - offset;
                 tileset.draw_tile(sprite, tint, pos.x, pos.y);
             }

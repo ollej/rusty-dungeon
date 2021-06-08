@@ -7,6 +7,20 @@ mod spawner;
 mod systems;
 mod turn_state;
 
+#[macro_use]
+extern crate lazy_static;
+
+lazy_static! {
+    pub static ref RANDOM_FLOOR_TILES: Vec<Sprite> = gen_random_tiles(0, 16);
+    pub static ref RANDOM_TREE_TILES: Vec<Sprite> = gen_random_tiles(16, 20);
+}
+
+fn gen_random_tiles(lower: usize, upper: usize) -> Vec<Sprite> {
+    (0..=(SCREEN_WIDTH * SCREEN_HEIGHT))
+        .map(|_| rand::gen_range(lower, upper) as Sprite)
+        .collect()
+}
+
 mod prelude {
     pub use bracket_pathfinding::prelude::*;
     pub use legion::systems::CommandBuffer;
@@ -25,6 +39,8 @@ mod prelude {
     pub use crate::spawner::*;
     pub use crate::systems::*;
     pub use crate::turn_state::*;
+    pub use crate::RANDOM_FLOOR_TILES;
+    pub use crate::RANDOM_TREE_TILES;
 }
 
 use prelude::*;

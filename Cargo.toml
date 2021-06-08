@@ -10,6 +10,7 @@ legion = { version = "=0.3.1", default-features = false, features = ["codegen"] 
 getrandom = { version = "0.2", features = ["js"] }
 bracket-pathfinding = "0.8.4"
 nanoserde = "0.1.26"
+lazy_static = "1.4.0"
 
 # Doesn't work with android build
 [profile.dev.package.'*']

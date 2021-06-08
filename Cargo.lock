@@ -922,6 +922,7 @@ version = "0.4.0"
 dependencies = [
  "bracket-pathfinding",
  "getrandom",
+ "lazy_static",
  "legion",
  "macroquad",
  "nanoserde",
