@@ -239,7 +239,15 @@ impl State {
     }
 }
 
-#[macroquad::main("Rusty Dungeon")]
+fn window_conf() -> Conf {
+    Conf {
+        window_title: "Rusty Dungeon".to_owned(),
+        fullscreen: true,
+        ..Default::default()
+    }
+}
+
+#[macroquad::main(window_conf())]
 async fn main() {
     let tileset = load_texture("assets/dungeonfont.png")
         .await
