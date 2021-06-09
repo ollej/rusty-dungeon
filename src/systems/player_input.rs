@@ -18,10 +18,10 @@ pub fn player_input(
 
     if let Some(key) = *key {
         let delta = match key {
-            KeyCode::Left => Point::new(-1, 0),
-            KeyCode::Right => Point::new(1, 0),
-            KeyCode::Up => Point::new(0, -1),
-            KeyCode::Down => Point::new(0, 1),
+            KeyCode::Left | KeyCode::H => Point::new(-1, 0),
+            KeyCode::Right | KeyCode::L => Point::new(1, 0),
+            KeyCode::Up | KeyCode::K => Point::new(0, -1),
+            KeyCode::Down | KeyCode::J => Point::new(0, 1),
             KeyCode::G => {
                 let (player, player_pos) = players
                     .iter(ecs)
