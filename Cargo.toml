@@ -5,7 +5,7 @@ authors = ["Olle Wreede <olle@wreede.se>"]
 edition = "2021"
 
 [dependencies]
-macroquad = "0.3.3"
+macroquad = "0.3.24"
 legion = { version = "=0.3.1", default-features = false, features = ["codegen"] }
 getrandom = { version = "0.2", features = ["js"] }
 bracket-pathfinding = "0.8.4"
