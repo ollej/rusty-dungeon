@@ -1,3 +1,5 @@
+#![windows_subsystem = "windows"]
+
 mod camera_view;
 mod components;
 mod macroquad_utils;
