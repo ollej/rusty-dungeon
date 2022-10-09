@@ -21,6 +21,7 @@ opt-level = 'z'
 lto = true
 panic = 'abort'
 codegen-units = 1
+strip = true
 
 [package.metadata.scripts]
 build-web = "bin/build-web"
