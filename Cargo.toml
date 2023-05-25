@@ -12,8 +12,12 @@ bracket-pathfinding = "0.8.4"
 nanoserde = "0.1.26"
 lazy_static = "1.4.0"
 
+[profile.dev]
+debug = 1 # less precise locations
+
 # Doesn't work with android build
 [profile.dev.package.'*']
+debug = false # no debug symbols for deps
 opt-level = 3
 
 [profile.release]
