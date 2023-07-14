@@ -483,7 +483,7 @@ dependencies = [
 
 [[package]]
 name = "rusty-dungeon"
-version = "0.5.0"
+version = "0.6.0"
 dependencies = [
  "bracket-pathfinding",
  "getrandom",
