@@ -62,7 +62,7 @@ impl TileSet {
     pub fn draw_tile(&self, sprite: Sprite, color: Color, x: i32, y: i32) {
         let spr_rect = self.sprite_rect(sprite);
         draw_texture_ex(
-            self.texture,
+            &self.texture,
             tile_pos_x(x),
             tile_pos_y(y),
             color,
@@ -116,7 +116,7 @@ where
     };
     let dimensions = measure_text(
         &text.to_string(),
-        Some(Font::default()),
+        None,
         text_params.font_size,
         text_params.font_scale,
     );

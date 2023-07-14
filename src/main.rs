@@ -62,7 +62,7 @@ impl State {
         let mut ecs = World::default();
         let mut resources = Resources::default();
         let mut map_builder = MapBuilder::new();
-        let tileset = Self::tileset(texture);
+        let tileset = Self::tileset(texture.clone());
         spawn_player(&mut ecs, map_builder.player_start);
         let exit_idx = map_builder.map.point2d_to_index(map_builder.amulet_start);
         map_builder.map.tiles[exit_idx] = TileType::Exit;
@@ -84,7 +84,7 @@ impl State {
 
     fn tileset(texture: Texture2D) -> TileSet {
         TileSet {
-            texture: texture,
+            texture,
             tile_width: 32,
             tile_height: 32,
             columns: 16,
@@ -217,7 +217,7 @@ impl State {
         self.resources.insert(map_builder.map);
         self.resources
             .insert(CameraView::new(map_builder.player_start));
-        let tileset = Self::tileset(self.texture);
+        let tileset = Self::tileset(self.texture.clone());
         self.resources.insert(tileset);
         self.resources.insert(TurnState::AwaitingInput);
         self.resources.insert(map_builder.theme);
@@ -227,7 +227,7 @@ impl State {
         self.ecs = World::default();
         self.resources = Resources::default();
         let mut map_builder = MapBuilder::new();
-        let tileset = Self::tileset(self.texture);
+        let tileset = Self::tileset(self.texture.clone());
         spawn_player(&mut self.ecs, map_builder.player_start);
         let exit_idx = map_builder.map.point2d_to_index(map_builder.amulet_start);
         map_builder.map.tiles[exit_idx] = TileType::Exit;
