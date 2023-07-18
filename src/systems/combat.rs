@@ -41,7 +41,7 @@ pub fn combat(ecs: &mut SubWorld, commands: &mut CommandBuffer) {
             final_damage, base_damage, weapon_damage
         );
 
-        if let Ok(mut health) = ecs
+        if let Ok(health) = ecs
             .entry_mut(*victim)
             .unwrap()
             .get_component_mut::<Health>()
