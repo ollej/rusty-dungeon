@@ -24,6 +24,7 @@ fn gen_random_tiles(lower: usize, upper: usize) -> Vec<Sprite> {
 }
 
 mod prelude {
+    pub use bracket_pathfinding::prelude::Rect;
     pub use bracket_pathfinding::prelude::*;
     pub use legion::systems::CommandBuffer;
     pub use legion::world::SubWorld;
