@@ -31,7 +31,7 @@ pub fn player_input(
                 let mut items = <(Entity, &Item, &Point)>::query();
                 items
                     .iter(ecs)
-                    .filter(|(_entity, _item, &item_pos)| item_pos == player_pos)
+                    .filter(|&(ref _entity, ref _item, &item_pos)| item_pos == player_pos)
                     .for_each(|(entity, _item, _item_pos)| {
                         commands.remove_component::<Point>(*entity);
                         commands.add_component(*entity, Carried(player));

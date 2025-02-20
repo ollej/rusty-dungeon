@@ -34,6 +34,8 @@ mod prelude {
     pub const SCREEN_HEIGHT: i32 = 50;
     pub const DISPLAY_WIDTH: i32 = SCREEN_WIDTH / 2;
     pub const DISPLAY_HEIGHT: i32 = SCREEN_HEIGHT / 2;
+    pub use crate::RANDOM_FLOOR_TILES;
+    pub use crate::RANDOM_TREE_TILES;
     pub use crate::camera_view::*;
     pub use crate::components::*;
     pub use crate::macroquad_utils::*;
@@ -42,8 +44,6 @@ mod prelude {
     pub use crate::spawner::*;
     pub use crate::systems::*;
     pub use crate::turn_state::*;
-    pub use crate::RANDOM_FLOOR_TILES;
-    pub use crate::RANDOM_TREE_TILES;
 }
 
 use prelude::*;

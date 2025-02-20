@@ -18,12 +18,12 @@ pub fn tooltips(ecs: &SubWorld, #[resource] mouse_pos: &Point, #[resource] camer
         .filter(|(_, pos, _)| **pos == map_pos && player_fov.visible_tiles.contains(&pos))
         .for_each(|(entity, _, name)| {
             let screen_pos = *mouse_pos;
-            let display =
-                if let Ok(health) = ecs.entry_ref(*entity).unwrap().get_component::<Health>() {
+            let display = match ecs.entry_ref(*entity).unwrap().get_component::<Health>() {
+                Ok(health) => {
                     format!("{} : {} hp", &name.0, health.current)
-                } else {
-                    name.0.clone()
-                };
+                }
+                _ => name.0.clone(),
+            };
             print_pos(screen_pos, &display);
         });
 }
